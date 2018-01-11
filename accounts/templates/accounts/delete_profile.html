@@ -8,7 +8,8 @@
 <body>
 {%block body%}
 <div class="container">
-    <h1>Are you sure you want to delete : {{user}}</h1>
+    <h1>Are you sure you want to delete your information {{user}}?</h1>
+    <h2>You will be logged out!</h2>
     <br>
 <form method="post">
     {%csrf_token%}

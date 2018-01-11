@@ -4,7 +4,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import login
 from django.contrib.auth import authenticate
-from accounts.forms import RegistrationForm,EditProfileForm,EditUserProfileForm
+from accounts.forms import RegistrationForm,EditProfileForm,EditUserProfileForm, ResetPasswordForm
 from .models import User,UserProfile
 
 @login_required
@@ -70,14 +70,20 @@ def change_password(request):
 
 @login_required
 def delete_profile(request):
-    user = authenticate(email=request.user.email, password=request.user.password)
-    if user is not None:
-        login(request, user)
     userprofile = UserProfile.objects.get(user=request.user)
     if request.method == 'POST':
         userprofile.is_live = False
         userprofile.save()
-        update_session_auth_hash(request, user)
         return redirect('/account/profile/view_all')
     else:
         return render(request,'accounts/delete_profile.html',{'user':userprofile})
+
+def password_reset(request):
+    if request.method == 'POST':
+        form = ResetPasswordForm(request.POST)
+        if form.is_valid():
+            return redirect('/account/reset_password/done/')
+    else:
+        form = ResetPasswordForm()
+        args = {'form':form}
+        return render(request,'accounts/password_reset.html',args)

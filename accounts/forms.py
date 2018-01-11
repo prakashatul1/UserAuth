@@ -51,3 +51,8 @@ class EditUserProfileForm(forms.ModelForm):
             'website',
             'phone',
         )
+
+class ResetPasswordForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('email',)

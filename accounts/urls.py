@@ -15,9 +15,9 @@ urlpatterns = [
     url(r'^profile/edit/$', views.edit_profile, name='edit_profile'),
     url(r'^profile/delete/$', views.delete_profile, name='delete_profile'),
     url(r'^change_password/$', views.change_password, name='change_password'),
-    url(r'^reset_password/$',password_reset,name='password_reset'),
-    url(r'^reset_password/done$',password_reset_done,name='password_reset_done'),
-    url(r'^password-reset/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$', password_reset_confirm,
+    url(r'^reset_password/$',views.password_reset,name='password_reset'),
+    url(r'^reset_password/done/$', password_reset_done, name='password_reset_done'),
+    url(r'^password_reset/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$', password_reset_confirm,
         name='password_reset_confirm'),
-    url(r'^password-reset/complete/$', password_reset_complete, name='password_reset_complete'),
+    url(r'^password_reset/complete/$', password_reset_complete, name='password_reset_complete'),
 ]

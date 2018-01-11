@@ -1,0 +1,21 @@
+{%extends 'base.html'%}
+{%block head%}
+    <title>
+        Login
+    </title>
+{%endblock%}
+{%block body%}
+<div class="container">
+    <h1>Welcome!</h1>
+        <p>You can login here</p>
+        <h2>Login</h2>
+        <form method="post">
+            {%csrf_token%}
+            {{form.as_p}}
+            <button type="submit">login</button>
+            <br>
+        </form>
+    <li><a href="/account/reset_password">Reset Password</a></li>
+
+    </div>
+{%endblock%}

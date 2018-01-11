@@ -1,0 +1,22 @@
+{%extends 'base.html'%}
+<html>
+<head>
+    {%block head%}
+    <title>Edit Profile</title>
+    {%endblock%}
+</head>
+<body>
+{%block body%}
+<div class="container">
+    <h1>Edit Profile</h1>
+    <h3>You can edit profile information here</h3>
+<form method="post">
+    {%csrf_token%}
+    {{form1.as_p}}
+    {{form2.as_p}}
+    <button type="submit">Submit</button>
+</form>
+</div>
+{%endblock%}
+</body>
+</html>

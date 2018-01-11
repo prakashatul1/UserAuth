@@ -12,7 +12,7 @@ def view_all(request):
     user = authenticate(email=request.user.email, password=request.user.password)
     if user is not None:
         login(request, user)
-    user_list = User.objects.all()
+    user_list = UserProfile.objects.filter(is_live=True)
     table = {'user_list': user_list}
     update_session_auth_hash(request, user)
     return render(request,'accounts/view_all.html',table)
@@ -67,3 +67,17 @@ def change_password(request):
         form = PasswordChangeForm(user=request.user)
         args = {'form': form}
         return render(request, 'accounts/change_password.html', args)
+
+@login_required
+def delete_profile(request):
+    user = authenticate(email=request.user.email, password=request.user.password)
+    if user is not None:
+        login(request, user)
+    userprofile = UserProfile.objects.get(user=request.user)
+    if request.method == 'POST':
+        userprofile.is_live = False
+        userprofile.save()
+        update_session_auth_hash(request, user)
+        return redirect('/account/profile/view_all')
+    else:
+        return render(request,'accounts/delete_profile.html',{'user':userprofile})

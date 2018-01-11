@@ -24,16 +24,15 @@
             </thead>
             {% for each in user_list%}
             <tr>
-                <td>{{each.id}}</td>
-                <td>{{each.userprofile}}</td>
-                <td>{{each.first_name}}</td>
-                <td>{{each.last_name}}</td>
+                <td>{{each.user.id}}</td>
+                <td>{{each.user.username}}</td>
+                <td>{{each.user.first_name}}</td>
+                <td>{{each.user.last_name}}</td>
                 <td>{{each.email}}</td>
-                <td>{{each.userprofile.description}}</td>
-                <td>{{each.userprofile.city}}</td>
-                <td>{{each.userprofile.website}}</td>
-                <td>{{each.userprofile.phone}}</td>
-
+                <td>{{each.description}}</td>
+                <td>{{each.city}}</td>
+                <td>{{each.website}}</td>
+                <td>{{each.phone}}</td>
             </tr>
             {% endfor %}
         </table>

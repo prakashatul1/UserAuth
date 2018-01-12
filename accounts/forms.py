@@ -56,3 +56,9 @@ class ResetPasswordForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('email',)
+
+
+class SetPasswordForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('password',)

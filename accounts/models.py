@@ -15,6 +15,7 @@ class UserProfile(models.Model):
     website = models.URLField(default='')
     phone = models.IntegerField(default=0)
     is_live = models.BooleanField(default=True)
+    token = models.CharField(max_length=100,default='')
 
     def __str__(self):
         return self.user.username

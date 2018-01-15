@@ -1,4 +1,7 @@
 import hashlib
+from rest_framework import generics
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth.forms import PasswordChangeForm,AuthenticationForm
 from django.contrib.auth import update_session_auth_hash,login,logout
@@ -6,6 +9,20 @@ from django.contrib.auth.decorators import login_required
 from accounts.forms import RegistrationForm,EditProfileForm,EditUserProfileForm, ResetPasswordForm, SetPasswordForm
 from django.core.mail import send_mail
 from .models import User,UserProfile
+from .serializers import UserProfileSerializer
+
+
+class UserProfileList(generics.ListCreateAPIView):
+    queryset = UserProfile.objects.all()
+    serializer_class = UserProfileSerializer
+
+    def perform_create(self, serializer):
+        serializer.save()
+
+class DetailsView(generics.RetrieveUpdateDestroyAPIView):
+
+    queryset = UserProfile.objects.all()
+    serializer_class = UserProfileSerializer
 
 def loginview(request):
     if request.POST:

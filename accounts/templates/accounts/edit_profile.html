@@ -12,8 +12,9 @@
     <h3>You can edit profile information here</h3>
 <form method="post">
     {%csrf_token%}
-    {{form1.as_p}}
-    {{form2.as_p}}
+    {{userform.as_p}}
+    {%csrf_token%}
+    {{userprofileform.as_p}}
     <button type="submit">Submit</button>
 </form>
 </div>

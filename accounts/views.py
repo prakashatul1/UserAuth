@@ -1,28 +1,120 @@
 import hashlib
-from rest_framework import generics
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from django.shortcuts import render, redirect, HttpResponse
+from ast import literal_eval
+import requests
+# from rest_framework import generics
+# from rest_framework.views import APIView
+# from rest_framework.response import Response
+from django.shortcuts import render, redirect, HttpResponse,get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.forms import PasswordChangeForm,AuthenticationForm
 from django.contrib.auth import update_session_auth_hash,login,logout
 from django.contrib.auth.decorators import login_required
 from accounts.forms import RegistrationForm,EditProfileForm,EditUserProfileForm, ResetPasswordForm, SetPasswordForm
 from django.core.mail import send_mail
 from .models import User,UserProfile
-from .serializers import UserProfileSerializer
+from django.http import JsonResponse
+# from .serializers import UserProfileSerializer
 
 
-class UserProfileList(generics.ListCreateAPIView):
-    queryset = UserProfile.objects.all()
-    serializer_class = UserProfileSerializer
+# class UserProfileList(generics.ListCreateAPIView):
+#     queryset = UserProfile.objects.all()
+#     serializer_class = UserProfileSerializer
+#
+#     def perform_create(self, serializer):
+#         serializer.save()
+#
+# class DetailsView(generics.RetrieveUpdateDestroyAPIView):
+#
+#     queryset = UserProfile.objects.all()
+#     serializer_class = UserProfileSerializer
 
-    def perform_create(self, serializer):
-        serializer.save()
+@csrf_exempt
+def userprofileapiview(request):
+    result = []
 
-class DetailsView(generics.RetrieveUpdateDestroyAPIView):
+    if request.method == 'POST':
+        data_dict = literal_eval(request.body)
+        try:
+            user = User.objects.create(
+                username=data_dict.get('username'),
+                email = data_dict.get('email'),
+                first_name = data_dict.get('first_name'),
+                last_name = data_dict.get('last_name'),
+                password = data_dict.get('password'),
+            )
+        except:
+            return JsonResponse({'msg': 'Invalid data'})
+        try:
+            user.userprofile.phone = data_dict.get('phone')
+            user.userprofile.website = data_dict.get('website')
+            user.userprofile.city = data_dict.get('city')
+            user.userprofile.description = data_dict.get('description')
+            user.userprofile.save()
+        except:
+            return JsonResponse({'msg1': 'User created succesfully','msg2': 'Userprofile created succesfully withe empty data', 'userid': user.id})
 
-    queryset = UserProfile.objects.all()
-    serializer_class = UserProfileSerializer
+        return JsonResponse({'msg':'User created succesfully','userid':user.id})
+
+    if request.method == 'GET':
+        for each in User.objects.all():
+            result.append(each.userprofile.as_json())
+
+        return JsonResponse(result,safe=False)
+
+@csrf_exempt
+def userdetailapiview(request,pk):
+    result = []
+    if request.method == 'GET':
+        try:
+            user = User.objects.get(pk=pk)
+        except:
+            return JsonResponse({"msg": "User not found"})
+        result.append(user.userprofile.as_json())
+        return JsonResponse(result, safe=False)
+
+    if request.method == 'DELETE':
+        try:
+            user = User.objects.get(pk=pk)
+        except:
+            return JsonResponse({"msg": "User not found"})
+        user.delete()
+        return JsonResponse({"msg":"User has been deleted"})
+
+    if request.method == 'PUT':
+        try:
+            user = User.objects.get(pk=pk)
+        except:
+            return JsonResponse({"msg": "User not found"})
+        pass
+        data_dict = literal_eval(request.body)
+        edited = False
+        if 'email' in data_dict.keys():
+            user.email = data_dict['email']
+            edited = True
+        if 'first_name' in data_dict.keys():
+            user.email = data_dict['first_name']
+            edited = True
+        if 'last_name' in data_dict.keys():
+            user.email = data_dict['last_name']
+            edited = True
+        if 'phone' in data_dict.keys():
+            user.userprofile.phone = data_dict['phone']
+            edited = True
+        if 'website' in data_dict.keys():
+            user.userprofile.website = data_dict['website']
+            edited = True
+        if 'city' in data_dict.keys():
+            user.userprofile.city = data_dict['city']
+            edited = True
+        if 'description' in data_dict.keys():
+            user.userprofile.description = data_dict['description']
+            edited = True
+        if edited == True:
+            user.save()
+            user.userprofile.save()
+            return JsonResponse({"msg": "User successfully modified"})
+        return JsonResponse({"msg":"Invalid data"})
+
 
 def loginview(request):
     if request.POST:

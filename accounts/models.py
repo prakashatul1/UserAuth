@@ -16,6 +16,18 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.username
 
+    def as_json(self):
+        return{
+            "description":self.description,
+            "city":self.city,
+            "website":self.website,
+            "phone":self.phone,
+            "username":self.user.username,
+            "first_name":self.user.first_name,
+            "last_name":self.user.last_name,
+            "email":self.user.email,
+        }
+
 def create_profile(sender, **kwargs):
     if kwargs['created']:
         user_profile = UserProfile.objects.create(user=kwargs['instance'])

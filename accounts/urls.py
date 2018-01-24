@@ -17,4 +17,6 @@ urlpatterns = [
     url(r'^reset_password/done/$', password_reset_done, name='password_reset_done'),
     url(r'^password_reset/confirm/', views.password_reset_confirm,
         name='password_reset_confirm'),
+    url(r'^send_email/$', views.send_email,
+        name='send_email'),
 ]

@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
 from .models import UserProfile
+from ckeditor.widgets import CKEditorWidget
 
 class LoginForm(AuthenticationForm):
     class Meta:
@@ -67,3 +68,17 @@ class SetPasswordForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('password',)
+
+class SendEmailForm(forms.Form):
+
+    # userlist = User.objects.all()
+    # choices = ()
+    # for each in userlist:
+    #     choices = choices + (each,)
+    # user = forms.ChoiceField(widget=forms.Select,choices=choices)
+    user = forms.ModelMultipleChoiceField(queryset = User.objects.all(),widget=forms.CheckboxSelectMultiple())
+    subject = forms.CharField(max_length=20)
+    body = forms.CharField(max_length=1000,widget=CKEditorWidget())
+
+    class Meta:
+        fields = ('user','subject','body')

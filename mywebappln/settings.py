@@ -14,6 +14,7 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+print BASE_DIR
 
 
 # Quick-start development settings - unsuitable for production
@@ -39,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'widget_tweaks',
+    'ckeditor',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -121,6 +124,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = '/static/'
+STATICFILES_DIRS = (
+   os.path.join(BASE_DIR, 'static'),
+)
 
 LOGIN_REDIRECT_URL = '/account/profile'
 
@@ -131,3 +138,15 @@ EMAIL_HOST_USER = "atul.prakash@stayabode.com"
 EMAIL_HOST_PASSWORD = "atul1234"
 EMAIL_PORT = 587
 SERVER_EMAIL = EMAIL_HOST
+
+MEDIA_ROOT = 'accounts/media/'
+MEDIA_URL = 'accounts/media/'
+
+CKEDITOR_CONFIGS = {
+    "default": {
+        "removePlugins": "stylesheetparser",
+    }
+}
+
+
+

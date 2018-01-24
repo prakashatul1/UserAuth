@@ -1,0 +1,25 @@
+{%extends 'base.html'%}
+{% load static %}
+
+
+{%block head%}
+    <title>
+        Send E-mail
+    </title>
+{%endblock%}
+{%block body%}
+
+    <div class="container">
+    <h1>Welcome!</h1>
+        Select user to send e-mail!
+        <br>
+    <form method="post">
+        {%csrf_token%}
+        {{form.media}}
+        {{form.as_p}}
+        <button type="submit">Send</button>
+    </form>
+        <!--<img src="{% static 'accounts/JPG.jpg' %}"/>-->
+    </div>
+
+{%endblock%}

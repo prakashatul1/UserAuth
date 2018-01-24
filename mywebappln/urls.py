@@ -14,7 +14,7 @@ Including another URLconf
     2. Import the include() function: from django.conf.urls import url, include
     3. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
-# from rest_framework.urlpatterns import format_suffix_patterns
+from rest_framework.urlpatterns import format_suffix_patterns
 from django.conf.urls import url, include
 from django.contrib import admin
 from accounts import views
@@ -23,10 +23,11 @@ urlpatterns = [
     url(r'^$', views.loginview),
     url(r'^admin/', admin.site.urls),
     url(r'^account/',include('accounts.urls')),
-    # url(r'^userprofile/$', views.UserProfileList.as_view()),
-    # url(r'^userprofile/(?P<pk>[0-9]+)/$',
-    #     views.DetailsView.as_view(), name="details"),
-    url(r'^api/userprofile/$',views.userprofileapiview,name='userprofile_api'),
-    url(r'^api/userprofile/(?P<pk>[0-9]+)/$',views.userdetailapiview,name='userdetail_api')
+    url(r'^userprofile/$', views.UserProfileList.as_view()),
+    url(r'^userprofile/(?P<pk>[0-9]+)/$',
+        views.DetailsView.as_view(), name="details"),
+    # custom api
+    # url(r'^api/userprofile/$',views.userprofileapiview,name='userprofile_api'),
+    # url(r'^api/userprofile/(?P<pk>[0-9]+)/$',views.userdetailapiview,name='userdetail_api')
 ]
-# urlpatterns = format_suffix_patterns(urlpatterns)
+urlpatterns = format_suffix_patterns(urlpatterns)
